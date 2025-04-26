@@ -9,10 +9,10 @@ router.get('/', async (req, res) => {
         if (sports.length === 0) {
             return res.status(404).json({ error: 'No sports found' });
         }
-        res.status(200).json({ message: 'Sports retrieved successfully', sports });
+      return  res.status(200).json({ message: 'Sports retrieved successfully', sports });
     } catch (error) {
         console.error('Error retrieving sports:', error);
-        res.status(500).json({ error: 'Could not retrieve sports' });
+       return  res.status(500).json({ error: 'Could not retrieve sports' });
     }
 });
 
@@ -26,7 +26,7 @@ router.get('/:name', async (req, res) => {
         res.status(200).json({ message: 'Sport found', sport });
     } catch (error) {
         console.error('Error retrieving sport:', error);
-        res.status(500).json({ error: 'Could not retrieve the sport' });
+        return res.status(500).json({ error: 'Could not retrieve the sport' });
     }
 });
 
@@ -40,7 +40,7 @@ router.delete('/:name', async (req, res) => {
         res.status(200).json({ message: 'Sport deleted successfully' });
     } catch (error) {
         console.error('Error deleting sport:', error);
-        res.status(500).json({ error: 'Could not delete the sport' });
+       return res.status(500).json({ error: 'Could not delete the sport' });
     }
 });
 
@@ -61,10 +61,10 @@ router.post('/', async (req, res) => {
            description:req.body.description
         });
         await newSport.save();
-        res.status(201).json({ message: 'Sport added successfully', newSport });
+        return res.status(201).json({ message: 'Sport added successfully', newSport });
     } catch (error) {
         console.error('Error adding sport:', error);
-        res.status(500).json({ error: 'Could not add the sport' });
+        return res.status(500).json({ error: 'Could not add the sport' });
     }
 });
 

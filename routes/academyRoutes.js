@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         res.status(200).json({ message: 'Academies found', academies });
     } catch (error) {
         console.error('Error retrieving academies:', error);
-        res.status(500).json({ error: 'Could not retrieve academies' });
+        return res.status(500).json({ error: 'Could not retrieve academies' });
     }
 });
 
@@ -23,10 +23,10 @@ router.get('/:name', async (req, res) => {
         if (!academy) {
             return res.status(404).json({ error: 'No such academy exists' });
         }
-        res.status(200).json({ message: 'Academy found', academy });
+        return res.status(200).json({ message: 'Academy found', academy });
     } catch (error) {
         console.error('Error retrieving academy:', error);
-        res.status(500).json({ error: 'Could not retrieve academy' });
+        return res.status(500).json({ error: 'Could not retrieve academy' });
     }
 });
 
@@ -37,10 +37,10 @@ router.delete('/:name', async (req, res) => {
         if (!deletedAcademy) {
             return res.status(404).json({ error: 'No such academy exists' });
         }
-        res.status(200).json({ message: 'Academy deleted successfully', deletedAcademy });
+        return res.status(200).json({ message: 'Academy deleted successfully', deletedAcademy });
     } catch (error) {
         console.error('Error deleting academy:', error);
-        res.status(500).json({ error: 'Could not delete academy' });
+        return res.status(500).json({ error: 'Could not delete academy' });
     }
 });
 
@@ -62,10 +62,10 @@ router.post('/', async (req, res) => {
         });
 
         const savedAcademy = await newAcademy.save();
-        res.status(201).json({ message: 'Academy has been added', savedAcademy });
+        return res.status(201).json({ message: 'Academy has been added', savedAcademy });
     } catch (error) {
         console.error('Error inserting academy:', error);
-        res.status(500).json({ error: 'Could not insert academy' });
+        return  res.status(500).json({ error: 'Could not insert academy' });
     }
 });
 module.exports=router; 
