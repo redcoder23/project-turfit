@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 // Get group by name
 router.get('/:name', async (req, res) => {
     try {
-        const group = await Group.findOne({ name: req.params.name });
+        const group = await Group.findOne({ name: { $regex: `^${req.params.name}$`, $options: 'i' } });
         if (!group) {
             return res.status(404).json({ error: 'No such group exists' });
         }
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 // Delete group by name
 router.delete('/:name', async (req, res) => {
     try {
-        const deletedGroup = await Group.findOneAndDelete({ name: req.params.name });
+        const deletedGroup = await Group.findOneAndDelete({ name: { $regex: `^${req.params.name}$`, $options: 'i' } });
         if (!deletedGroup) {
             return res.status(404).json({ error: 'Group does not exist' });
         }

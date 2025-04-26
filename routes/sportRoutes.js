@@ -19,8 +19,7 @@ router.get('/', async (req, res) => {
 // Get sport by name
 router.get('/:name', async (req, res) => {
     try {  
-        const name = req.params.name.trim().toLowerCase();
-        const sport = await Sport.findOne({ name });
+        const sport = await Sport.findOne({ name:{$regex:`^${req.params.name.trim()}$`,$options:'i'}});
         if (!sport) {
             return res.status(404).json({ error: 'No such sport exists' });
         }
@@ -34,8 +33,7 @@ router.get('/:name', async (req, res) => {
 // Delete sport by name
 router.delete('/:name', async (req, res) => {
     try {
-        const name = req.params.name.trim().toLowerCase();
-        const sport = await Sport.deleteOne({ name });
+        const sport = await Sport.deleteOne({ name:{$regex:`^${req.params.name.trim()}$`,$options:'i'}});
         if (sport.deletedCount === 0) {
             return res.status(404).json({ error: 'No such sport exists' });
         }
@@ -53,15 +51,14 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'No fields provided in the request body' });
         }  
         
-        const name = req.body.name.trim().toLowerCase();
-        const exist = await Sport.findOne({ name });
+        const exist = await Sport.findOne({ name:{$regex:`^${req.body.name.trim()}$`,$options:'i'}});
         if (exist) {
             return res.status(400).json({ error: 'Sport already exists' });
         }   
         
         const newSport = new Sport({
-            name: name,
-            equipments: req.body.equipments
+            name: req.body.name,
+           description:req.body.description
         });
         await newSport.save();
         res.status(201).json({ message: 'Sport added successfully', newSport });

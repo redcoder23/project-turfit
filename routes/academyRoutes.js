@@ -17,8 +17,9 @@ router.get('/', async (req, res) => {
 
 // Get academy by name
 router.get('/:name', async (req, res) => {
-    try {
-        const academy = await Academy.findOne({ name: req.params.name });
+    try {  
+
+        const academy = await Academy.findOne({ name:{$regex:`^${req.params.name.trim()}$`,$options:'i'}});
         if (!academy) {
             return res.status(404).json({ error: 'No such academy exists' });
         }
@@ -32,7 +33,7 @@ router.get('/:name', async (req, res) => {
 // Delete academy by name
 router.delete('/:name', async (req, res) => {
     try {
-        const deletedAcademy = await Academy.findOneAndDelete({ name: req.params.name });
+        const deletedAcademy = await Academy.findOneAndDelete({ name: {$regex:`^${req.params.name.trim()}$`,$options:'i'}});
         if (!deletedAcademy) {
             return res.status(404).json({ error: 'No such academy exists' });
         }
@@ -46,17 +47,18 @@ router.delete('/:name', async (req, res) => {
 // Insert academy
 router.post('/', async (req, res) => {
     try {
-        const existingAcademy = await Academy.findOne({ name: req.body.name });
+        const existingAcademy = await Academy.findOne({ name: {$regex:`^${req.body.name.trim()}$`,$options:'i'}, 
+        location: {$regex:`^${req.body.location.trim()}$`,$options:'i'} 
+    });
         if (existingAcademy) {
             return res.status(400).json({ error: 'Academy already exists' });
         }
 
         const newAcademy = new Academy({
-            name: req.body.name,
+            name: req.body.name.trim().toLowerCase(),
             location: req.body.location,
             sportsOffered: req.body.sportsOffered,
-            contact: req.body.contact,
-            images: req.body.images
+            contact: req.body.contact
         });
 
         const savedAcademy = await newAcademy.save();

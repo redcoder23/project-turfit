@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
         // const newTurf = new Turf(req.body); 
         // const savedTurf = await newTurf.save();
         const turfData = req.body;
-        turfData.location = turfData.location.trim().toLowerCase(); // Normalize it here
+        turfData.location = turfData.location.trim().toLowerCase(); 
          turfData.name=turfData.name.trim().toLowerCase();
         const newTurf = new Turf(turfData);
         const savedTurf=await newTurf.save();
@@ -84,10 +84,10 @@ router.get('/:name', async (req, res) => {
 router.get('/location/:location',async(req,res)=>{  
       try 
       {  
-        const location =req.params.location.trim(); //trim any white space 
+        const location =req.params.location.trim(); 
         const turf = await Turf.find({
             location: { $regex: `^${location}$`, $options: 'i' }
-          });  //case insensitive location 
+          }); 
           if(!turf ||turf.length===0) 
           {
             return res.status(404).json({error:'No turves exist for this location'}) ; 

@@ -5,11 +5,11 @@ const History = require('../models/history');
 // Get all history records
 router.get('/', async (req, res) => {
     try {
-        const history = await History.find().populate('user', 'name email'); // adjust fields if needed
-        res.status(200).json({ message: 'History records retrieved', history });
+        const history = await History.find().populate('user', 'name email'); 
+       return res.status(200).json({ message: 'History records retrieved', history });
     } catch (error) {
         console.error('Error fetching history:', error);
-        res.status(500).json({ error: 'Could not fetch history' });
+       return res.status(500).json({ error: 'Could not fetch history' });
     }
 });
 
@@ -20,10 +20,10 @@ router.get('/user/:userId', async (req, res) => {
         if (!userHistory.length) {
             return res.status(404).json({ error: 'No history found for this user' });
         }
-        res.status(200).json({ message: 'User history retrieved', userHistory });
+       return res.status(200).json({ message: 'User history retrieved', userHistory });
     } catch (error) {
         console.error('Error fetching user history:', error);
-        res.status(500).json({ error: 'Could not fetch user history' });
+       return res.status(500).json({ error: 'Could not fetch user history' });
     }
 });
 
@@ -33,22 +33,31 @@ router.post('/', async (req, res) => {
         const { user, action } = req.body;
         const newHistory = new History({ user, action });
         const savedHistory = await newHistory.save();
-        res.status(201).json({ message: 'History record added', savedHistory });
+     return   res.status(201).json({ message: 'History record added', savedHistory });
     } catch (error) {
         console.error('Error adding history:', error);
-        res.status(500).json({ error: 'Could not add history record' });
+       return  res.status(500).json({ error: 'Could not add history record' });
     }
 });
 
-// Delete all history (optional, use with caution)
-router.delete('/', async (req, res) => {
-    try {
-        await History.deleteMany();
-        res.status(200).json({ message: 'All history records deleted' });
+//delete a history 
+router.delete('/:id', async (req, res) => {
+    try { 
+        const id = req.params.id.trim();   
+
+        const fidel = await History.findOne({ _id: id }); 
+
+        if (!fidel) 
+            return res.status(404).json({ message: 'No such history found' });
+
+        const del = await History.deleteOne({ _id: id }); 
+
+        return res.status(200).json({ message: 'Required history record deleted successfully' });
     } catch (error) {
         console.error('Error deleting history:', error);
-        res.status(500).json({ error: 'Could not delete history' });
+        return res.status(500).json({ error: 'Could not delete history' });
     }
 });
+
 
 module.exports = router;
