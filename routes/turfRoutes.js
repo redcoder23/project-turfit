@@ -23,7 +23,7 @@ router.put('/name/:name', async (req, res) => {
         if (!updatedTurf) {
             return res.status(404).json({ error: 'No such turf found' });
         }
-        res.json({ message: 'Turf updated successfully', updatedTurf });
+        return res.status(201).json({ message: 'Turf updated successfully', updatedTurf });
     } catch (error) {
         console.error('Error updating turf:', error);
         return res.status(500).json({ error: 'Could not update the turf' });
@@ -60,7 +60,7 @@ router.delete('/:name', async (req, res) => {
         if (!deletedTurf) {
             return res.status(404).json({ error: 'Turf does not exist' });
         }
-        res.json({ message: 'Turf deleted successfully', deletedTurf });
+        return res.status(201).json({ message: 'Turf deleted successfully', deletedTurf });
     } catch (error) {
         console.error('Error deleting turf:', error);
         return res.status(500).json({ error: 'Could not delete the turf' });
@@ -92,7 +92,7 @@ router.get('/location/:location',async(req,res)=>{
           {
             return res.status(404).json({error:'No turves exist for this location'}) ; 
           }  
-        return res.json({message:'Turves found for this location',turf}); 
+        return res.status(201).json({message:'Turves found for this location',turf}); 
       } 
       catch(error) 
       {

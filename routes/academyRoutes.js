@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         if (!academies.length) {
             return res.status(404).json({ error: 'No academies found' });
         }
-        res.status(200).json({ message: 'Academies found', academies });
+        return res.status(200).json({ message: 'Academies found', academies });
     } catch (error) {
         console.error('Error retrieving academies:', error);
         return res.status(500).json({ error: 'Could not retrieve academies' });

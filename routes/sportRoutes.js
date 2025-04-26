@@ -23,7 +23,7 @@ router.get('/:name', async (req, res) => {
         if (!sport) {
             return res.status(404).json({ error: 'No such sport exists' });
         }
-        res.status(200).json({ message: 'Sport found', sport });
+        return res.status(200).json({ message: 'Sport found', sport });
     } catch (error) {
         console.error('Error retrieving sport:', error);
         return res.status(500).json({ error: 'Could not retrieve the sport' });
@@ -37,7 +37,7 @@ router.delete('/:name', async (req, res) => {
         if (sport.deletedCount === 0) {
             return res.status(404).json({ error: 'No such sport exists' });
         }
-        res.status(200).json({ message: 'Sport deleted successfully' });
+       return res.status(200).json({ message: 'Sport deleted successfully' });
     } catch (error) {
         console.error('Error deleting sport:', error);
        return res.status(500).json({ error: 'Could not delete the sport' });
